@@ -2,27 +2,19 @@ import { useState } from "react";
 import {
   Box,
   TextField,
-  useMediaQuery,
   Typography,
   useTheme,
   InputAdornment,
   IconButton,
-  Divider,
 } from "@mui/material";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setLogin, setUserData } from "state/authSlice";
-import Dropzone from "react-dropzone";
-import FlexBetween from "components/FlexBetween";
 import { toast, Toaster } from "react-hot-toast";
 import { postDataAPI } from "utils/fetchData";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { GoogleLogin } from "@react-oauth/google";
-import axios from "axios";
-import config from "../../utils/config.js"
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { MDBCard, MDBCardBody, MDBCardImage, MDBCol, MDBContainer, MDBIcon, MDBRow } from "mdb-react-ui-kit";
 
@@ -49,13 +41,6 @@ const loginSchema = yup.object().shape({
   .matches(/[0-9]/, "Password must contain at least one number"),
 });
 
-const initialValuesRegister = {
-  username: "",
-  email: "",
-  password: "",
-  picture: "",
-};
-
 const initialValues = {
   emailOrUsername: "",
   password: "",
@@ -68,9 +53,7 @@ const LoginPage = () => {
   const { palette } = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const isNonMobile = useMediaQuery("(min-width:600px)");
-  const isLogin = pageType === "login";
-  const isRegister = pageType === "register";
+
 
 
   const login = async (values, onSubmitProps) => {

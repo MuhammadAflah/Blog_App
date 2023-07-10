@@ -38,7 +38,6 @@ const PostWidget = ({
   comments,
   createdAt,
 }) => {
-  console.log(name, "user nameeeeeeeeeeeeeeeeeeee");
   const [isComments, setIsComments] = useState(false);
   const [comment, setComment] = useState("");
   const [errors, setErrors] = useState({});

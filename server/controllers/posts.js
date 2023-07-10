@@ -44,11 +44,13 @@ export const createPost = async (req, res) => {
 export const getFeedPosts = async (req, res) => {
   try {
     const posts = await fetchFindData({ isDelete: false });
-    res.status(200).json(posts);
+    const sortedPosts = posts.sort((a, b) => b.createdAt - a.createdAt); // Sort posts by createdAt in descending order
+    res.status(200).json(sortedPosts);
   } catch (err) {
     res.status(404).json({ message: err.message });
   }
 };
+
 
 export const getUserPosts = async (req, res) => {
   try {

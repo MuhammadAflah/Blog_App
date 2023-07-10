@@ -6,8 +6,6 @@ const initialState = {
   token: null,
   posts: [],
   isEditing: false,
-  isMessage: false,
-  suggestions:[],
   ids:{},
 };
 
@@ -15,9 +13,7 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setMode: (state) => {
-      state.mode = state.mode === "light" ? "dark" : "light";
-    },
+    
     setLogin: (state, action) => {
       state.token = action.payload.token;
     },
@@ -28,20 +24,7 @@ export const authSlice = createSlice({
       state.user = null;
       state.token = null;
     },
-    setFollowings: (state, action) => {
-      if (state.user) {
-        state.user.followings = action.payload.followings;
-      } else {
-        console.log("user friends non-existent");
-      }
-    },
-    setFollowers: (state, action) => {
-      if (state.user) {
-        state.user.followers = action.payload.followers;
-      } else {
-        console.log("user friends non-existent");
-      }
-    },
+    
     setProfileImg: (state, action) => {
       if (state.user) {
         state.user.picturePath = action.payload.picturePath;
@@ -62,12 +45,6 @@ export const authSlice = createSlice({
     setIsEditing: (state, action) => {
       state.isEditing = action.payload.isEditing;
     },
-    setIsMessage: (state, action) => {
-      state.isMessage = action.payload.isMessage;
-    },
-    setSuggestions: (state, action) => {
-      state.suggestions = action.payload.suggestions;
-    },
     setIds: (state, action) => {
       state.ids = action.payload.ids;
     },
@@ -75,10 +52,6 @@ export const authSlice = createSlice({
 });
 
 export const {
-  setFollowings,
-  setFollowers,
-  setSuggestions,
-  setMode,
   setLogin,
   setLogout,
   setPosts,
@@ -86,7 +59,6 @@ export const {
   setUserData,
   setProfileImg,
   setIsEditing,
-  setIsMessage,
   setIds,
 } = authSlice.actions;
 export default authSlice.reducer;

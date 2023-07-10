@@ -1,65 +1,88 @@
 import { ManageAccountsOutlined } from "@mui/icons-material";
-import { Box, Typography, Divider, useTheme, Button } from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import UserImage from "components/UserImage";
 import FlexBetween from "components/FlexBetween";
 import WidgetWrapper from "components/WidgetWrapper";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import { getDataAPI, postDataAPI } from "utils/fetchData";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { getDataAPI } from "utils/fetchData";
 import { setIsEditing } from "state/authSlice";
-// import Friend from "components/Friend";
+import { CSVLink } from "react-csv";
+
+const headers = [
+  { label: "UserName", key: "username" },
+  { label: "Name", key: "name" },
+  { label: "Email", key: "email" },
+  { label: "Picture_Path", key: "picturepath" },
+  { label: "CreatedAt", key: "createdat" },
+  { label: "Bio", key: "bio" },
+
+
+]
 
 const UserWidget = ({
   userId,
   picturePath,
   isEditUser,
-  isFriendData,
-  isProfile = false,
 }) => {
   const { palette } = useTheme();
   const navigate = useNavigate();
-  const [friendData, setFriendData] = useState({});
-  const [followers, setFollowers] = useState({});
+  const [userData, setUserData] = useState({});
   const token = useSelector((state) => state?.token);
   const user = useSelector((state) => state?.user);
-  const dark = palette?.neutral?.dark;
-  const medium = palette?.neutral?.medium;
-  const main = palette?.neutral?.main;
   const dispatch = useDispatch();
-  const { userId: friendId } = useParams();
+  const csvDownloadRef = useRef(null)
+  const csvData = [
+    {
+      UserName: userData.username,
+      Email: userData.email,
+      Name: userData.name,
+      picturePath: userData.picturePath,
+      CreatedAt: userData.createdAt,
+      Bio:userData.bio
+    },
+  ];
 
-  // const createConverStation = async (friendId) => {
-  //   const { data } = await postDataAPI(`/converstations`, { friendId },token );
 
-  //   if (data) {
-  //     navigate(`/message`);
-  //   }
-  // };
+  const handleDownloadClick = async () => {
+    try {
+      const response = await getDataAPI(`/users/${userId}`, token);
+      const userData = response.data.user;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data } = await getDataAPI(`/users/${userId}`, token);
-        setFriendData(data);
+      const csvData = [
+        {
+          UserName: userData.username,
+          Email: userData.email,
+          Name: userData.name,
+          picturePath: userData.picturePath,
+          CreatedAt: userData.createdAt,
+          Bio:userData.bio
+        },
+      ];
 
-        const { data: followersData } = await getDataAPI(
-          `/users/${userId}/followers`,
-          token
-        );
-        setFollowers(followersData);
-      } catch (error) {
-        console.error(error);
-      }
-    };
+      const csvContent = "data:text/csv;charset=utf-8,"
+        + Object.keys(csvData[0]).join(",") + "\n"
+        + csvData.map(item => Object.values(item).join(",")).join("\n");
 
-    fetchData();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "user_data.csv");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+    }
+  };
+
 
   let handleEditClick = () => {
     dispatch(setIsEditing({ isEditing: true }));
   };
 
+  
   if (!user) {
     return null;
   }
@@ -75,12 +98,11 @@ const UserWidget = ({
         <FlexBetween gap="0.5rem">
           <UserImage
             image={picturePath}
-            // isProfile={!isFriendData && isProfile}
+          // isProfile={!isFriendData && isProfile}
           />
           <Box mb="1rem">
             <Typography
               variant="h4"
-              color={dark}
               fontWeight="500"
               sx={{
                 "&:hover": {
@@ -91,15 +113,15 @@ const UserWidget = ({
             >
               {username}
               <Box>
-            <Typography>
-              {bio}
-            </Typography>
-          </Box>    
+                <Typography>
+                  {bio}
+                </Typography>
+              </Box>
             </Typography>
           </Box>
-          
+
         </FlexBetween>
-        
+
         {isEditUser && (
           <ManageAccountsOutlined
             style={{ cursor: "pointer" }}
@@ -107,7 +129,24 @@ const UserWidget = ({
           />
         )}
       </FlexBetween>
-        
+      {/* <Divider/>
+      <Typography>
+        {name}
+      </Typography> */}
+      {!isEditUser && (
+        <Box mt="1rem">
+          <CSVLink
+            data={csvData}
+            headers={headers}
+            filename="user_data.csv"
+            target="_blank"
+            ref={csvDownloadRef}
+          />
+          <Button variant="contained" onClick={handleDownloadClick}>Download User Details</Button>
+        </Box>
+      )}
+
+
     </WidgetWrapper>
   );
 };

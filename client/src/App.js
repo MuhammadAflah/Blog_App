@@ -15,8 +15,8 @@ import RegistrationForm from "scenes/RegisterPage/Form";
 
 
 function App() {
-  const mode = useSelector((state) => state?.mode);
-  const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
+  // const mode = useSelector((state) => state?.mode);
+  const theme = useMemo(() => createTheme(themeSettings()));
   const isAuth = Boolean(useSelector((state) => state?.token));
 
   const isOnline = useOnline();

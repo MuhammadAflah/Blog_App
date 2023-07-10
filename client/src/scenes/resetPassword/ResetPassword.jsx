@@ -1,8 +1,6 @@
-import { useTheme } from "@emotion/react";
-import { EditOutlined, Visibility, VisibilityOff } from "@mui/icons-material";
-import { Button, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { Button, IconButton, InputAdornment, TextField } from "@mui/material";
 import { Box } from "@mui/system";
-import WidgetWrapper from "components/WidgetWrapper";
 import { MDBCard, MDBCardBody, MDBCardImage, MDBCol, MDBContainer, MDBRow } from "mdb-react-ui-kit";
 import React, { useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
@@ -10,7 +8,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { putDataAPI } from "utils/fetchData";
 
 export const ResetPassword = () => {
-  const theme = useTheme();
   const location = useLocation();
   const code = location.search.split("?")[1];
   const [password, setPassword] = useState("");

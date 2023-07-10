@@ -1,6 +1,4 @@
-import { useTheme } from "@emotion/react";
-import { Box, Button, Grid, TextField, Typography } from "@mui/material";
-import WidgetWrapper from "components/WidgetWrapper";
+import { Box, Button, TextField } from "@mui/material";
 import { MDBCard, MDBCardBody, MDBCardImage, MDBCol, MDBContainer, MDBIcon, MDBRow } from "mdb-react-ui-kit";
 import { useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
@@ -8,7 +6,6 @@ import { Link } from "react-router-dom";
 import { postDataAPI } from "utils/fetchData";
 
 export const ForgotPassword = () => {
-  const theme = useTheme();
   const [isVerified, setIsVerified] = useState(false);
   const [email, setEmail] = useState("");
 

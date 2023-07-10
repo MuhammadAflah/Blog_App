@@ -15,21 +15,16 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import {
   Search,
-  Message,
-  DarkMode,
-  LightMode,
-  Notifications,
-  Help,
   Menu,
   Close,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import { setMode, setLogout } from "state/authSlice";
+import { setLogout } from "state/authSlice";
 import { Link, useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
 import { getDataAPI } from "utils/fetchData";
 
-const Navbar = () => {
+const Navbar = (picturePath) => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
   const [users, setUsers] = useState([]);
   const [search, setSearch] = useState("");
@@ -48,6 +43,8 @@ const Navbar = () => {
   const alt = theme.palette?.background?.alt;
 
   const fullName = `${user ? user?.username : "username"}`;
+  const profilePicture = user ? user.picturePath : "";
+  
   const getAllUsers = async () => {
     const { data } = await getDataAPI("/users", token);
     setUsers(data);
@@ -124,7 +121,7 @@ const Navbar = () => {
                   <Box>
                     {users.map((user1) =>
                       user1?.username.toLowerCase().includes(search) &&
-                      user._id !== user1?.id ? (
+                        user._id !== user1?.id ? (
                         <Link
                           key={user1?._id}
                           style={{ textDecoration: "none" }}
@@ -134,7 +131,7 @@ const Navbar = () => {
                             display="flex"
                             alignItems="center"
                             justifyContent="space-between"
-                            p={1} 
+                            p={1}
                             borderRadius="5px"
                             _hover={{
                               backgroundColor: "rgba(255, 255, 255, 0.2)",
@@ -160,7 +157,7 @@ const Navbar = () => {
                     )}
                   </Box>
                 ) : (
-                  <Typography>User not found.</Typography>
+                  <Typography variant="h2">User not found.</Typography>
                 )}
               </Box>
             ) : null}
@@ -171,6 +168,11 @@ const Navbar = () => {
       {/* DESKTOP NAV */}
       {isNonMobileScreens ? (
         <FlexBetween gap="2rem">
+          <Avatar
+            alt="userprofile"
+            src={profilePicture}
+            sx={{ marginRight: 1 }}
+          />
           <FormControl variant="standard" value={fullName}>
             <Select
               value={fullName}
@@ -193,16 +195,16 @@ const Navbar = () => {
                 <Typography>{fullName}</Typography>
               </MenuItem>
               <MenuItem
-                // onClick={() => {
-                //   dispatch(setLogout());
-                // }}
+              // onClick={() => {
+              //   dispatch(setLogout());
+              // }}
               >
-                <Button sx={{backgroundColor:"orange", width:"100%"}} onClick={() => {
+                <Button sx={{ backgroundColor: "orange", width: "100%" }} onClick={() => {
                   dispatch(setLogout());
                 }}>
-                Log Out
+                  Log Out
                 </Button>
-                
+
               </MenuItem>
             </Select>
           </FormControl>
@@ -244,6 +246,11 @@ const Navbar = () => {
             alignItems="center"
             gap="3rem"
           >
+            <Avatar
+            alt="userprofile"
+            src={profilePicture}
+            sx={{ marginRight: 1 }}
+          />
             <FormControl variant="standard" value={fullName}>
               <Select
                 value={fullName}
@@ -265,6 +272,7 @@ const Navbar = () => {
                 <MenuItem value={fullName}>
                   <Typography>{fullName}</Typography>
                 </MenuItem>
+                
                 <MenuItem onClick={() => dispatch(setLogout())}>
                   Log Out
                 </MenuItem>

@@ -7,28 +7,18 @@ import {
     useTheme,
     InputAdornment,
     IconButton,
-    Container,
-    Card,
-    CardMedia,
-    CardContent,
-    Grid,
-    Divider,
 } from "@mui/material";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import { Formik } from "formik";
 import * as yup from "yup";
 import { useNavigate, Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setLogin, setUserData } from "state/authSlice";
 import Dropzone from "react-dropzone";
 import FlexBetween from "components/FlexBetween";
 import { toast, Toaster } from "react-hot-toast";
 import { postDataAPI } from "utils/fetchData";
 import LoadingButton from "@mui/lab/LoadingButton";
-import { GoogleLogin } from "@react-oauth/google";
-import axios from "axios";
-import config from "../../utils/config.js"
-import { Tag, Visibility, VisibilityOff } from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { MDBCard, MDBCardBody, MDBCardImage, MDBCol, MDBContainer, MDBIcon, MDBRow } from "mdb-react-ui-kit";
 
 const registerSchema = yup.object().shape({
@@ -59,15 +49,11 @@ const initialValues = {
 };
 
 const RegistrationForm = () => {
-    const [pageType, setPageType] = useState("login");
     const [loading, setLoading] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const { palette } = useTheme();
-    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const isNonMobile = useMediaQuery("(min-width:600px)");
-    const isLogin = pageType === "login";
-    const isRegister = pageType === "register";
+
 
     const register = async (values, onSubmitProps) => {
         try {

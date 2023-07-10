@@ -31,47 +31,25 @@ export const colorTokens = {
 };
 
 // mui theme settings
-export const themeSettings = (mode) => {
+export const themeSettings = () => {
   return {
     palette: {
-      mode: mode,
-      ...(mode === "dark"
-        ? {
-            primary: {
-              dark: colorTokens.primary[200],
-              main: colorTokens.primary[500],
-              light: colorTokens.primary[800],
-            },
-            neutral: {
-              dark: colorTokens.grey[100],
-              main: colorTokens.grey[200],
-              mediumMain: colorTokens.grey[300],
-              medium: colorTokens.grey[400],
-              light: colorTokens.grey[700],
-            },
-            background: {
-              default: colorTokens.grey[900],
-              alt: colorTokens.grey[800],
-            },
-          }
-        : {
-            primary: {
-              dark: colorTokens.primary[700],
-              main: colorTokens.primary[1000],
-              light: colorTokens.primary[500],
-            },
-            neutral: {
-              dark: colorTokens.grey[700],
-              main: colorTokens.grey[500],
-              mediumMain: colorTokens.grey[400],
-              medium: colorTokens.grey[300],
-              light: colorTokens.grey[50],
-            },
-            background: {
-              default: colorTokens.grey[10],
-              alt: colorTokens.grey[0],
-            },
-          }),
+      primary: {
+        dark: colorTokens.primary[700],
+        main: colorTokens.primary[1000],
+        light: colorTokens.primary[500],
+      },
+      neutral: {
+        dark: colorTokens.grey[700],
+        main: colorTokens.grey[500],
+        mediumMain: colorTokens.grey[400],
+        medium: colorTokens.grey[300],
+        light: colorTokens.grey[50],
+      },
+      background: {
+        default: colorTokens.grey[10],
+        alt: colorTokens.grey[0],
+      },
     },
     typography: {
       fontFamily: ["Rubik", "sans-serif"].join(","),

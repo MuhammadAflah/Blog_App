@@ -146,7 +146,7 @@ export const forgotpassword = async (req, res) => {
     transport.sendMail({
       from: "blogspot@gmail.com",
       to: user.email,
-      subject: "Reset Token",
+      subject: "Reset Password",
       html: `http://localhost:3000/reset-password/?token=${RandomTxt}&_id=${user._id}`,
     });
     return res
